@@ -12,6 +12,19 @@ const compat = new FlatCompat({
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
+    files: ["**/*.{js,jsx,ts,tsx}"],
+    plugins: ["prettier"],
+    rules: {
+      // Ensure Prettier show up as ESLint errors
+      "prettier/prettier": "error",
+
+      "no-console": ["warn", { allow: ["warn", "error"] }],
+      "no-unused-vars": "off", // handled by TS
+      "@typescript-eslint/no-unused-vars": ["warn"],
+      "react/react-in-jsx-scope": "off" // not needed in Next.js
+    },
+  },
+  {
     ignores: [
       "node_modules/**",
       ".next/**",
