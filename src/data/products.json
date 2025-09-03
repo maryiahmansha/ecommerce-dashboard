@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "name": "T-Shirt",
+    "price": 20,
+    "category": "Clothing",
+    "stock": 120
+  },
+  {
+    "id": 2,
+    "name": "Sneakers",
+    "price": 60,
+    "category": "Shoes",
+    "stock": 50
+  },
+  {
+    "id": 3,
+    "name": "Backpack",
+    "price": 45,
+    "category": "Accessories",
+    "stock": 80
+  }
+]
