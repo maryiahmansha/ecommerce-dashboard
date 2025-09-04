@@ -1,5 +1,5 @@
+import '../styles/globals.css';
 import { Metadata } from 'next';
-import React from 'react';
 
 export const metadata: Metadata = {
   title: 'E-commerce Dashboard',
@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html>
-      <body>{children}</body>
+    <html lang="en">
+      {/* <script src="https://cdn.tailwindcss.com"></script> */}
+      <body className="bg-gray-100 text-gray-900">{children}</body>
     </html>
   );
 }
