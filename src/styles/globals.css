@@ -1,1 +1,11 @@
-@tailwind utilities;
+/* src/styles/globals.css */
+/* Import Tailwind's base + utilities via PostCSS plugin */
+@import 'tailwindcss';
+
+/* Your custom global rules below */
+html,
+body {
+  /* optional resets */
+}
+
+/* Example: keep any additional custom @layer or rules here */
