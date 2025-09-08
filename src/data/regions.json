@@ -1,0 +1,18 @@
+[
+  {
+    "region": "North America",
+    "orders": 320
+  },
+  {
+    "region": "Europe",
+    "orders": 280
+  },
+  {
+    "region": "Asia",
+    "orders": 450
+  },
+  {
+    "region": "South America",
+    "orders": 150
+  }
+]

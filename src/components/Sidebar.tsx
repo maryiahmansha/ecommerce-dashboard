@@ -2,9 +2,9 @@ import Link from 'next/link';
 
 export const Sidebar = () => {
   return (
-    <aside>
-      <h2>Dashboard</h2>
-      <nav>
+    <aside className="w-64 bg-white shadow-md p-4">
+      <h2 className="text-xl font-bold mb-6">Dashboard</h2>
+      <nav className="flex flex-col gap-2">
         <Link href="/dashboard" className="hover:text-blue-500">
           Home
         </Link>

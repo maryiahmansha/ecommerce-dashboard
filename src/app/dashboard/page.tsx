@@ -1,8 +1,9 @@
 import Layout from '@/components/Layout';
 import salesData from '@/data/sales.json';
-import productData from '@/data/products.json';
 import customerData from '@/data/customers.json';
 import KPI from '@/components/KPI';
+import RevenueChart from '@/components/RevenueChart';
+import OrdersByRegion from '@/components/OrdersByRegion';
 
 export default function DashboardPage() {
   const totalRevenue = salesData.reduce((acc, curr) => acc + curr.revenue, 0);
@@ -17,10 +18,9 @@ export default function DashboardPage() {
         <KPI title="Total Products" value={totalOrders} />
         <KPI title="Total Customers" value={totalCustomers} />
       </div>
-      <div>
-        {/* {Charts} */}
-        <div>Revenue Chart</div>
-        <div>Orders by Region</div>
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <RevenueChart />
+        <OrdersByRegion />
       </div>
     </Layout>
   );
