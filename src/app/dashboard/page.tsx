@@ -4,6 +4,7 @@ import customerData from '@/data/customers.json';
 import KPI from '@/components/KPI';
 import RevenueChart from '@/components/RevenueChart';
 import OrdersByRegion from '@/components/OrdersByRegion';
+import CustomersPieChart from '@/components/CustomersPieChart';
 
 export default function DashboardPage() {
   const totalRevenue = salesData.reduce((acc, curr) => acc + curr.revenue, 0);
@@ -21,6 +22,11 @@ export default function DashboardPage() {
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <RevenueChart />
         <OrdersByRegion />
+      </div>
+
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <CustomersPieChart />
+        <div className="bg-white shadow p-4 rounded">More insights coming soon</div>
       </div>
     </Layout>
   );
