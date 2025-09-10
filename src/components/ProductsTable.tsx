@@ -1,9 +1,12 @@
 'use client';
 import productsData from '@/data/products.json';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import Modal from './Modal';
 
 export default function ProductsTable() {
   const [products, setProducts] = useState(productsData);
+  const [isAddOpen, setIsAddOpen] = useState(false);
+
   const handleDelete = (id: number) => {
     setProducts(products.filter((p) => p.id !== id));
   };
@@ -12,12 +15,28 @@ export default function ProductsTable() {
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+
+    const newProduct = {
+      id: Date.now(), // simple unique ID
+      name: formData.get('name') as string,
+      category: formData.get('category') as string,
+      price: Number(formData.get('price')),
+      stock: Number(formData.get('stock')),
+    };
+
+    setProducts([...products, newProduct]);
+    setIsAddOpen(false);
+  };
+
   return (
     <div className="bg-white shadow rounded p-4">
       <div className="mb-4 flex justify-between items-center">
         <input
           type="text"
-          placeholder="Search products"
+          placeholder="Search products..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="border rounded p-2 w-1/3"
@@ -27,7 +46,7 @@ export default function ProductsTable() {
         <h2 className="text-lg font-bold">Product List</h2>
         <button
           className="bg-blue-600 text-white px-3 py-1 rounded"
-          onClick={() => alert('TODO: open add product modal')}
+          onClick={() => setIsAddOpen(true)}
         >
           + Add Product
         </button>
@@ -67,6 +86,42 @@ export default function ProductsTable() {
           ))}
         </tbody>
       </table>
+
+      <Modal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} title="Add Product">
+        <form onSubmit={handleAdd} className="flex flex-col gap-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Product name"
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Category"
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            className="border p-2 rounded"
+            required
+          />
+          <input
+            type="text"
+            name="stock"
+            placeholder="Stock"
+            className="border p-2 rounded"
+            required
+          />
+          <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
+            Save
+          </button>
+        </form>
+      </Modal>
     </div>
   );
 }
