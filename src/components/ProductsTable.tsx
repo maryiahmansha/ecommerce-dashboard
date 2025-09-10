@@ -7,8 +7,22 @@ export default function ProductsTable() {
   const handleDelete = (id: number) => {
     setProducts(products.filter((p) => p.id !== id));
   };
+  const [search, setSearch] = useState('');
+  const filteredProducts = products.filter((p) =>
+    p.name.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="bg-white shadow rounded p-4">
+      <div className="mb-4 flex justify-between items-center">
+        <input
+          type="text"
+          placeholder="Search products"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border rounded p-2 w-1/3"
+        />
+      </div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold">Product List</h2>
         <button
@@ -29,7 +43,7 @@ export default function ProductsTable() {
           </tr>
         </thead>
         <tbody>
-          {products.map((p) => (
+          {filteredProducts.map((p) => (
             <tr key={p.id} className="border-t">
               <td className="p-2">{p.name}</td>
               <td className="p-2">{p.category}</td>
