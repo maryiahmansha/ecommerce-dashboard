@@ -2,18 +2,42 @@
 import productsData from '@/data/products.json';
 import React, { useState } from 'react';
 import Modal from './Modal';
+import { Product } from '@/types/product';
 
 export default function ProductsTable() {
-  const [products, setProducts] = useState(productsData);
+  const [products, setProducts] = useState<Product[]>(productsData);
   const [isAddOpen, setIsAddOpen] = useState(false);
-
-  const handleDelete = (id: number) => {
-    setProducts(products.filter((p) => p.id !== id));
-  };
+  const [currentProduct, setCurrentProduct] = useState<Product | null>();
   const [search, setSearch] = useState('');
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
+  const handleDelete = (id: number) => {
+    setProducts(products.filter((p) => p.id !== id));
+  };
+
+  const handleEditOpen = (product: Product) => {
+    setCurrentProduct(product);
+    setIsEditOpen(true);
+  };
+
+  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    if (!currentProduct) return;
+    const updateProduct = {
+      ...currentProduct,
+      name: formData.get('name') as string,
+      category: formData.get('category') as string,
+      price: Number(formData.get('price')),
+      stock: Number(formData.get('stock')),
+    };
+
+    setProducts(products.map((p) => (p.id === currentProduct.id ? updateProduct : p)));
+    setIsEditOpen(false);
+  };
 
   const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,7 +95,7 @@ export default function ProductsTable() {
               <td className="p-2 flex gap-2">
                 <button
                   className="bg-yellow-500 text-white px-2 py-1 rounded"
-                  onClick={() => alert('TODO: Edit Modal')}
+                  onClick={() => handleEditOpen(p)}
                 >
                   Edit
                 </button>
@@ -121,6 +145,48 @@ export default function ProductsTable() {
             Save
           </button>
         </form>
+      </Modal>
+
+      <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} title="Edit Product">
+        {currentProduct && (
+          <form className="flex flex-col gap-4" onSubmit={handleUpdate}>
+            <input
+              type="text"
+              name="name"
+              placeholder="Product name"
+              defaultValue={currentProduct.name}
+              className="border p-2 rounded"
+              required
+            />
+            <input
+              type="text"
+              name="category"
+              placeholder="Category"
+              defaultValue={currentProduct.category}
+              className="border p-2 rounded"
+              required
+            />
+            <input
+              type="number"
+              name="price"
+              placeholder="Price"
+              defaultValue={currentProduct.price}
+              className="border p-2 rounded"
+              required
+            />
+            <input
+              type="text"
+              name="stock"
+              placeholder="Stock"
+              defaultValue={currentProduct.stock}
+              className="border p-2 rounded"
+              required
+            />
+            <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
+              Update
+            </button>
+          </form>
+        )}
       </Modal>
     </div>
   );
