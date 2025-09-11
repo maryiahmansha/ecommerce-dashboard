@@ -3,6 +3,10 @@ import productsData from '@/data/products.json';
 import React, { useState } from 'react';
 import Modal from './Modal';
 import { Product } from '@/types/product';
+import z from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function ProductsTable() {
   const [products, setProducts] = useState<Product[]>(productsData);
@@ -22,6 +26,23 @@ export default function ProductsTable() {
     setCurrentProduct(product);
     setIsEditOpen(true);
   };
+
+  const productSchema = z.object({
+    name: z.string().min(2, 'Name must be at least 2 characters'),
+    category: z.string().min(2, 'Category is required'),
+    price: z.number().min(1, 'Price must be at least 1').max(10000, 'Price too high'),
+    stock: z.number().min(0, 'Stock cannot be negative').max(1000, 'Stock too high'),
+  });
+
+  type ProductFormData = z.infer<typeof productSchema>;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+  });
 
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -112,35 +133,57 @@ export default function ProductsTable() {
       </table>
 
       <Modal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} title="Add Product">
-        <form onSubmit={handleAdd} className="flex flex-col gap-4">
+        <form
+          className="flex flex-col gap-4"
+          onSubmit={handleSubmit((data) => {
+            const newProduct: Product = {
+              id: Date.now(),
+              ...data,
+            };
+            setProducts([...products, newProduct]);
+            setIsAddOpen(false);
+          })}
+        >
           <input
+            {...register('name')}
             type="text"
             name="name"
             placeholder="Product name"
             className="border p-2 rounded"
             required
           />
+          {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+
           <input
+            {...register('category')}
             type="text"
             name="category"
             placeholder="Category"
             className="border p-2 rounded"
             required
           />
+          {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
+
           <input
+            {...register('price', { valueAsNumber: true })}
             type="number"
             name="price"
             placeholder="Price"
             className="border p-2 rounded"
             required
           />
+          {errors.price && <p className="text-red-500 text-sm">{errors.price.message}</p>}
+
           <input
+            {...register('stock', { valueAsNumber: true })}
             type="text"
             name="stock"
             placeholder="Stock"
             className="border p-2 rounded"
             required
           />
+          {errors.stock && <p className="text-red-500 text-sm">{errors.stock.message}</p>}
+
           <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
             Save
           </button>
