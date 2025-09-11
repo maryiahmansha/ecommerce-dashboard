@@ -24,6 +24,7 @@ export default function ProductsTable() {
 
   const handleEditOpen = (product: Product) => {
     setCurrentProduct(product);
+    resetEditForm(product);
     setIsEditOpen(true);
   };
 
@@ -44,6 +45,15 @@ export default function ProductsTable() {
     resolver: zodResolver(productSchema),
   });
 
+  const {
+    register: registerEdit,
+    handleSubmit: handleEditSubmit,
+    formState: { errors: editErrors },
+    reset: resetEditForm,
+  } = useForm<ProductFormData>({
+    resolver: zodResolver(productSchema),
+  });
+
   const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -58,22 +68,6 @@ export default function ProductsTable() {
 
     setProducts(products.map((p) => (p.id === currentProduct.id ? updateProduct : p)));
     setIsEditOpen(false);
-  };
-
-  const handleAdd = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
-    const newProduct = {
-      id: Date.now(), // simple unique ID
-      name: formData.get('name') as string,
-      category: formData.get('category') as string,
-      price: Number(formData.get('price')),
-      stock: Number(formData.get('stock')),
-    };
-
-    setProducts([...products, newProduct]);
-    setIsAddOpen(false);
   };
 
   return (
@@ -192,39 +186,57 @@ export default function ProductsTable() {
 
       <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} title="Edit Product">
         {currentProduct && (
-          <form className="flex flex-col gap-4" onSubmit={handleUpdate}>
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={handleEditSubmit((data) => {
+              const updatedProduct: Product = {
+                ...currentProduct,
+                ...data,
+              };
+              setProducts(products.map((p) => (p.id === currentProduct.id ? updatedProduct : p)));
+              setIsEditOpen(false);
+            })}
+          >
             <input
+              {...registerEdit('name')}
               type="text"
               name="name"
               placeholder="Product name"
-              defaultValue={currentProduct.name}
               className="border p-2 rounded"
               required
             />
+            {editErrors.name && <p className="text-red-500 text-sm">{editErrors.name.message}</p>}
             <input
+              {...registerEdit('category')}
               type="text"
               name="category"
               placeholder="Category"
-              defaultValue={currentProduct.category}
               className="border p-2 rounded"
               required
             />
+            {editErrors.category && (
+              <p className="text-red-500 text-sm">{editErrors.category.message}</p>
+            )}
+
             <input
+              {...registerEdit('price')}
               type="number"
               name="price"
               placeholder="Price"
-              defaultValue={currentProduct.price}
               className="border p-2 rounded"
               required
             />
+            {editErrors.price && <p className="text-red-500 text-sm">{editErrors.price.message}</p>}
+
             <input
+              {...registerEdit('stock')}
               type="text"
               name="stock"
               placeholder="Stock"
-              defaultValue={currentProduct.stock}
               className="border p-2 rounded"
               required
             />
+
             <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
               Update
             </button>
