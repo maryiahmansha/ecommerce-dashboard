@@ -14,10 +14,13 @@ export default function ProductsTable() {
   const [currentProduct, setCurrentProduct] = useState<Product | null>();
   const [search, setSearch] = useState('');
   const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
 
-  const filteredProducts = products.filter((p) =>
-    p.name.toLowerCase().includes(search.toLowerCase())
-  );
+  const filteredProducts = products.filter((p) => {
+    const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = selectedCategory == 'All' || p.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
   const handleDelete = (id: number) => {
     setProducts(products.filter((p) => p.id !== id));
   };
@@ -72,7 +75,7 @@ export default function ProductsTable() {
 
   return (
     <div className="bg-white shadow rounded p-4">
-      <div className="mb-4 flex justify-between items-center">
+      <div className="mb-4 flex justify-between items-center gap-4">
         <input
           type="text"
           placeholder="Search products..."
@@ -80,6 +83,16 @@ export default function ProductsTable() {
           onChange={(e) => setSearch(e.target.value)}
           className="border rounded p-2 w-1/3"
         />
+        <select
+          value={selectedCategory}
+          className="border rounded p-2"
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          <option value="All">All Categories</option>
+          <option value="Clothing">Clothing</option>
+          <option value="Shoes">Shoes</option>
+          <option value="Accessories">Accessories</option>
+        </select>
       </div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold">Product List</h2>
