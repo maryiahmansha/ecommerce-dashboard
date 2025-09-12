@@ -117,7 +117,20 @@ export default function ProductsTable() {
           {filteredProducts.map((p, index) => (
             <tr key={p.id} className={index % 2 == 0 ? 'bg-gray-50 border-t' : 'bg-white border-t'}>
               <td className="p-2">{p.name}</td>
-              <td className="p-2">{p.category}</td>
+              <td className="p-2">
+                <span
+                  className={`px-2 py-1 rounded-full text-white text-sm ${
+                    p.category === 'Clothing'
+                      ? 'bg-blue-500'
+                      : p.category === 'Shoes'
+                        ? 'bg-green-500'
+                        : 'bg-yellow-500'
+                  }`}
+                >
+                  {p.category}
+                </span>
+              </td>
+
               <td className="p-2">{p.price}</td>
               <td className="p-2">{p.stock}</td>
               <td className="p-2 flex gap-2">
