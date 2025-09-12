@@ -114,8 +114,8 @@ export default function ProductsTable() {
           </tr>
         </thead>
         <tbody>
-          {filteredProducts.map((p) => (
-            <tr key={p.id} className="border-t">
+          {filteredProducts.map((p, index) => (
+            <tr key={p.id} className={index % 2 == 0 ? 'bg-gray-50 border-t' : 'bg-white border-t'}>
               <td className="p-2">{p.name}</td>
               <td className="p-2">{p.category}</td>
               <td className="p-2">{p.price}</td>
