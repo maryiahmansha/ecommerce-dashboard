@@ -132,7 +132,15 @@ export default function ProductsTable() {
               </td>
 
               <td className="p-2">{p.price}</td>
-              <td className="p-2">{p.stock}</td>
+              <td className="p-2">
+                <span
+                  className={`px-2 py-1 rounded-full text-white text-sm ${
+                    p.stock === 0 ? 'bg-red-500' : p.stock < 20 ? 'bg-yellow-500' : 'bg-green-500'
+                  }`}
+                >
+                  {p.stock === 0 ? 'Out of Stock' : p.stock < 20 ? 'Low Stock' : 'In Stock'}
+                </span>
+              </td>
               <td className="p-2 flex gap-2">
                 <button
                   className="bg-yellow-500 text-white px-2 py-1 rounded"
