@@ -1,6 +1,6 @@
 'use client';
 import productsData from '@/data/products.json';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 import { Product } from '@/types/product';
 import z from 'zod';
@@ -9,7 +9,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { v4 as uuidv4 } from 'uuid';
 
 export default function ProductsTable() {
-  const [products, setProducts] = useState<Product[]>(productsData);
+  const [products, setProducts] = useState<Product[]>(() => {
+    const stored = localStorage.getItem('products');
+    return stored ? JSON.parse(stored) : productsData;
+  });
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [currentProduct, setCurrentProduct] = useState<Product | null>();
   const [search, setSearch] = useState('');
@@ -57,21 +60,9 @@ export default function ProductsTable() {
     resolver: zodResolver(productSchema),
   });
 
-  const handleUpdate = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    if (!currentProduct) return;
-    const updateProduct = {
-      ...currentProduct,
-      name: formData.get('name') as string,
-      category: formData.get('category') as string,
-      price: Number(formData.get('price')),
-      stock: Number(formData.get('stock')),
-    };
-
-    setProducts(products.map((p) => (p.id === currentProduct.id ? updateProduct : p)));
-    setIsEditOpen(false);
-  };
+  useEffect(() => {
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
 
   return (
     <div className="bg-white shadow rounded p-4">
