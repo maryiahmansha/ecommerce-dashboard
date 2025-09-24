@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "name": "Alice Johnson",
+    "email": "alice@example.com",
+    "region": "North America",
+    "spent": 1200,
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Bob Smith",
+    "email": "bob@example.com",
+    "region": "Europe",
+    "spent": 850,
+    "active": false
+  },
+  {
+    "id": 3,
+    "name": "Charlie Lee",
+    "email": "charlie@example.com",
+    "region": "Asia",
+    "spent": 430,
+    "active": true
+  },
+  {
+    "id": 4,
+    "name": "Diana Prince",
+    "email": "diana@example.com",
+    "region": "South America",
+    "spent": 670,
+    "active": true
+  }
+]
