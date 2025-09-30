@@ -5,10 +5,7 @@ import { useEffect, useState } from 'react';
 import customersData from '@/data/customerDetails.json';
 
 export default function CustomersTable() {
-  const [customers, setCustomers] = useState<Customer[]>(() => {
-    const stored = localStorage.getItem('customers');
-    return stored ? JSON.parse(stored) : customersData;
-  });
+  const [customers, setCustomers] = useState<Customer[]>(customersData);
   const [search, setSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All');
   const filteredCustomers = customers.filter((c) => {
@@ -16,6 +13,13 @@ export default function CustomersTable() {
     const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
     return matchSearch && matchesRegion;
   });
+
+  useEffect(() => {
+    const stored = localStorage.getItem('customers');
+    if (stored) {
+      setCustomers(JSON.parse(stored));
+    }
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('customers', JSON.stringify(customers));
@@ -31,7 +35,11 @@ export default function CustomersTable() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <select className="border rounded p-2">
+        <select
+          className="border rounded p-2"
+          value={selectedRegion}
+          onChange={(e) => setSelectedRegion(e.target.value)}
+        >
           <option value="All">All Regions</option>
           <option value="North America">North America</option>
           <option value="Europe">Europe</option>
