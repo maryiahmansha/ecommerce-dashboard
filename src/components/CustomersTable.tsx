@@ -1,11 +1,15 @@
 'use client';
 
 import { Customer } from '@/types/customer';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import customersData from '@/data/customerDetails.json';
 
-export default function CustomersTable() {
-  const [customers, setCustomers] = useState<Customer[]>(customersData);
+interface Props {
+  customers: Customer[];
+  setCustomers: React.Dispatch<React.SetStateAction<Customer[]>>;
+}
+
+export default function CustomersTable({ customers, setCustomers }: Props) {
   const [search, setSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All');
   const filteredCustomers = customers.filter((c) => {
