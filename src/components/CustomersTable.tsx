@@ -2,7 +2,8 @@
 
 import { Customer } from '@/types/customer';
 import React, { useEffect, useState } from 'react';
-import customersData from '@/data/customerDetails.json';
+import Modal from './Modal';
+import CustomerForm from './CustomerForm';
 
 interface Props {
   customers: Customer[];
@@ -12,6 +13,9 @@ interface Props {
 export default function CustomersTable({ customers, setCustomers }: Props) {
   const [search, setSearch] = useState('');
   const [selectedRegion, setSelectedRegion] = useState('All');
+  const [currentCustomer, setCurrentCustomer] = useState<Customer | null>(null);
+  const [isEditOpen, setIsEditOpen] = useState<boolean>(false);
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false);
   const filteredCustomers = customers.filter((c) => {
     const matchSearch = c.name.toLowerCase().includes(search.toLowerCase());
     const matchesRegion = selectedRegion === 'All' || c.region === selectedRegion;
@@ -28,6 +32,30 @@ export default function CustomersTable({ customers, setCustomers }: Props) {
   useEffect(() => {
     localStorage.setItem('customers', JSON.stringify(customers));
   }, [customers]);
+
+  const handleDelete = (id: number) => {
+    setCustomers(customers.filter((c) => c.id !== id));
+  };
+
+  const handleEdit = (updatedCustomer: Partial<Customer>) => {
+    if (!currentCustomer) return;
+    const updated: Customer = { ...currentCustomer, ...updatedCustomer };
+    setCustomers(customers.map((c) => (c.id == updated.id ? updated : c)));
+    setIsEditOpen(false);
+  };
+
+  const handleAdd = (data: Partial<Customer>) => {
+    const newCustomer: Customer = {
+      id: Date.now(),
+      name: data.name ?? '',
+      email: data.email ?? '',
+      region: data.region ?? '',
+      spent: data.spent ?? 0,
+      active: data.active ?? true,
+    };
+    setCustomers([...customers, newCustomer]);
+    setIsAddOpen(false);
+  };
 
   return (
     <div className="bg-white shadow rounded p-4">
@@ -51,6 +79,12 @@ export default function CustomersTable({ customers, setCustomers }: Props) {
           <option value="South America">South America</option>
         </select>
       </div>
+      <button
+        className="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700"
+        onClick={() => setIsAddOpen(true)}
+      >
+        + Add Customer
+      </button>
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-gray-100 text-left">
@@ -77,10 +111,37 @@ export default function CustomersTable({ customers, setCustomers }: Props) {
                   {c.active ? 'Active' : 'Inactive'}
                 </span>
               </td>
+              <td className="p-2 flex gap-2">
+                <button
+                  className="bg-yellow-500 text-white px-2 py-1 rounded"
+                  onClick={() => {
+                    setCurrentCustomer(c);
+                    setIsEditOpen(true);
+                  }}
+                >
+                  Edit
+                </button>
+              </td>
+              <td className="p-2 flex gap-2">
+                <button
+                  className="bg-red-500 text-white px-2 py-1 rounded"
+                  onClick={() => {
+                    handleDelete(c.id);
+                  }}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
+      <Modal isOpen={isAddOpen} onClose={() => setIsAddOpen(false)} title="Add Customer">
+        <CustomerForm onSubmit={handleAdd} />
+      </Modal>
+      <Modal isOpen={isEditOpen} onClose={() => setIsEditOpen(false)} title="Edit Customer">
+        {currentCustomer && <CustomerForm customer={currentCustomer} onSubmit={handleEdit} />}
+      </Modal>
     </div>
   );
 }

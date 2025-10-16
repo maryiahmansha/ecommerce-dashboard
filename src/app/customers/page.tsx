@@ -1,3 +1,4 @@
+'use client';
 import CustomerAnalytics from '@/components/CustomerAnalytics';
 import CustomersTable from '@/components/CustomersTable';
 import Layout from '@/components/Layout';
