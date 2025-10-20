@@ -19,20 +19,36 @@ export default function CustomerForm({ customer, onSubmit }: Props) {
   });
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-      <input {...register('name')} className="border p-2 rounded" placeholder="Name" />
-      <input {...register('email')} className="border p-2 rounded" placeholder="Email" />
-      <input {...register('region')} className="border p-2 rounded" placeholder="Region" />
-      <input
-        type="number"
-        {...register('spent', { valueAsNumber: true })}
-        className="border p-2 rounded"
-        placeholder="Spent"
-      />
+      <div>
+        <label className="block text-sm font-medium">Name</label>
+        <input {...register('name')} className="border p-2 rounded" placeholder="Name" />
+        {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Email</label>
+        <input {...register('email')} className="border p-2 rounded" placeholder="Email" />
+        {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Region</label>
+        <input {...register('region')} className="border p-2 rounded" placeholder="Region" />
+        {errors.region && <p className="text-red-500 text-sm">{errors.region.message}</p>}
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Total Spent ($)</label>
+        <input
+          type="number"
+          {...register('spent', { valueAsNumber: true })}
+          className="border p-2 rounded"
+          placeholder="Spent"
+        />
+        {errors.spent && <p className="text-red-500 text-sm">{errors.spent.message}</p>}
+      </div>
       <label className="flex items-center gap-2">
         <input type="checkbox" {...register('active')} />
         Active
       </label>
-      <button type="submit" className="bg-green-600 text-white px-3 py-1 rounded">
+      <button type="submit" className="bg-green-600 text-white py-2 rounded hover:bg-green-700">
         Save
       </button>
     </form>
