@@ -2,6 +2,7 @@
 import CustomerAnalytics from '@/components/CustomerAnalytics';
 import CustomersTable from '@/components/CustomersTable';
 import Layout from '@/components/Layout';
+import TopSpenders from '@/components/TopSpenders';
 import customersData from '@/data/customerDetails.json';
 import { Customer } from '@/types/customer';
 import { useEffect, useState } from 'react';
@@ -25,6 +26,7 @@ export default function CustomersPage() {
       <h1 className="text-2xl font-bold mb-6">Customers</h1>
       <CustomersTable customers={customers} setCustomers={setCustomers} />
       <CustomerAnalytics customers={customers} />
+      <TopSpenders customers={customers} />
     </Layout>
   );
 }
