@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/components/ThemeProvider';
-import '../styles/globals.css';
+import '../../globals.css';
 import { Metadata } from 'next';
 import Header from '@/components/Header';
 
@@ -11,10 +11,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="bg-gray-100 text-gray-900">
+      <body className="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
         <ThemeProvider>
           <Header />
-          {children}
+          <main className="p-6">{children}</main>
         </ThemeProvider>
       </body>
     </html>
