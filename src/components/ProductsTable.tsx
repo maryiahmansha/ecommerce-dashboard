@@ -65,7 +65,7 @@ export default function ProductsTable() {
   }, [products]);
 
   return (
-    <div className="bg-white shadow rounded p-4">
+    <div className="bg-white shadow rounded p-4 dark:bg-gray-600">
       <div className="mb-4 flex justify-between items-center gap-4">
         <input
           type="text"
@@ -96,7 +96,7 @@ export default function ProductsTable() {
       </div>
       <table className="w-full">
         <thead>
-          <tr className="bg-gray-100 text-left">
+          <tr className="bg-gray-100 text-left dark:bg-gray-800">
             <th className="p-2">Name</th>
             <th className="p-2">Category</th>
             <th className="p-2">Price</th>
@@ -106,7 +106,14 @@ export default function ProductsTable() {
         </thead>
         <tbody>
           {filteredProducts.map((p, index) => (
-            <tr key={p.id} className={index % 2 == 0 ? 'bg-gray-50 border-t' : 'bg-white border-t'}>
+            <tr
+              key={p.id}
+              className={
+                index % 2 == 0
+                  ? 'bg-gray-50 border-t dark:bg-gray-400'
+                  : 'bg-white border-t dark:bg-gray-200'
+              }
+            >
               <td className="p-2">{p.name}</td>
               <td className="p-2">
                 <span

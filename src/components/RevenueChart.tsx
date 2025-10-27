@@ -5,7 +5,7 @@ import salesData from '@/data/sales.json';
 
 const RevenueChart = () => {
   return (
-    <div className="bg-white shadow rounded p-4">
+    <div className="bg-white shadow rounded p-4 dark:bg-gray-600">
       <h2 className="text-lg font-bold mb-4">Revenue Over Time</h2>
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={salesData}>

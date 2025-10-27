@@ -26,7 +26,9 @@ export default function DashboardPage() {
 
       <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         <CustomersPieChart />
-        <div className="bg-white shadow p-4 rounded">More insights coming soon</div>
+        <div className="bg-white shadow p-4 rounded dark:bg-gray-600">
+          More insights coming soon
+        </div>
       </div>
     </Layout>
   );

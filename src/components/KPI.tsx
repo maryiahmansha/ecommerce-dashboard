@@ -5,7 +5,7 @@ interface KPIProps {
 
 const KPI: React.FC<KPIProps> = ({ title, value }) => {
   return (
-    <div className="bg-white shadow rounded p-4 flex flex-col">
+    <div className="bg-white shadow rounded p-4 flex flex-col dark:bg-gray-600">
       <span className="text-sm text-gray-500">{title}</span>
       <span className="text-2xl font-bold mt-2">{value}</span>
     </div>
