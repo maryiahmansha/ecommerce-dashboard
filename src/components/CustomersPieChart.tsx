@@ -24,7 +24,7 @@ const CustomersPieChart = () => {
             dataKey="value"
             label
           >
-            {pieData.map((entry, index) => (
+            {pieData.map((_, index) => (
               <Cell key={`cell-${index}`} fill={COLOURS[index % COLOURS.length]} />
             ))}
           </Pie>

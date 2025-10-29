@@ -110,8 +110,8 @@ export default function ProductsTable() {
               key={p.id}
               className={
                 index % 2 == 0
-                  ? 'bg-gray-50 border-t dark:bg-gray-400'
-                  : 'bg-white border-t dark:bg-gray-200'
+                  ? 'bg-gray-50 border-t dark:bg-gray-500'
+                  : 'bg-white border-t dark:bg-gray-400'
               }
             >
               <td className="p-2">{p.name}</td>

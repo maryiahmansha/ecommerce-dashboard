@@ -58,7 +58,7 @@ export default function CustomersTable({ customers, setCustomers }: Props) {
   };
 
   return (
-    <div className="bg-white shadow rounded p-4">
+    <div className="bg-white dark:bg-gray-600 shadow rounded p-4">
       <div className="flex justify-between items-center mb-4 gap-4">
         <input
           type="text"
@@ -87,17 +87,25 @@ export default function CustomersTable({ customers, setCustomers }: Props) {
       </button>
       <table className="w-full border-collapse">
         <thead>
-          <tr className="bg-gray-100 text-left">
+          <tr className="bg-gray-100 text-left dark:bg-gray-600">
             <th className="p-2">Name</th>
             <th className="p-2">Email</th>
             <th className="p-2">Region</th>
             <th className="p-2">Spent ($)</th>
             <th className="p-2">Status</th>
+            <th className="p-2"></th>
           </tr>
         </thead>
         <tbody>
           {filteredCustomers.map((c, index) => (
-            <tr key={c.id} className={index % 2 == 0 ? 'bg-gray-50 border-t' : 'bg-white border-t'}>
+            <tr
+              key={c.id}
+              className={
+                index % 2 == 0
+                  ? 'bg-gray-50 border-t dark:bg-gray-500'
+                  : 'bg-white border-t dark:bg-gray-400'
+              }
+            >
               <td className="p-2">{c.name}</td>
               <td className="p-2">{c.email}</td>
               <td className="p-2">{c.region}</td>
