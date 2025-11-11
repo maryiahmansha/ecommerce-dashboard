@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import Cookies from 'js-cookie';
 
 interface AuthState {
   isAuthenticated: boolean;
@@ -7,7 +8,13 @@ interface AuthState {
 }
 
 export const useAuth = create<AuthState>((set) => ({
-  isAuthenticated: false,
-  login: () => set({ isAuthenticated: true }),
-  logout: () => set({ isAuthenticated: false }),
+  isAuthenticated: Cookies.get('auth') === 'true',
+  login: () => {
+    Cookies.set('auth', 'true', { expires: 7 });
+    set({ isAuthenticated: true });
+  },
+  logout: () => {
+    Cookies.remove('auth');
+    set({ isAuthenticated: false });
+  },
 }));
